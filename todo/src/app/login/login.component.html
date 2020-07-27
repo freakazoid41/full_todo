@@ -1,1 +1,16 @@
-<p>login works!</p>
+<div class="login-card">
+    <mat-card  class="card">
+        <mat-form-field class="login-item" appearance="outline">
+            <mat-label>Kullanıcı Adı</mat-label>
+            <input [(ngModel)]="username" matInput placeholder="falanboyle41">
+            <mat-hint  [hidden]="!warn['username']"><span style="color: tomato;">Kullanıcı Giriniz !</span></mat-hint>
+        </mat-form-field>
+        <mat-form-field class="login-item" appearance="outline">
+            <mat-label>Parola</mat-label>
+            <input [(ngModel)]="password" matInput placeholder="Placeholder">
+            <mat-hint [hidden]="!warn['password']"><span style="color: tomato;">Parola Giriniz !</span></mat-hint>
+        </mat-form-field>
+        
+        <button (click)="login()" mat-stroked-button color="warn">Giriş Yap</button>
+    </mat-card>
+</div>
