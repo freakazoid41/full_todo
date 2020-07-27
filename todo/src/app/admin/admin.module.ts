@@ -7,12 +7,20 @@ import { HeaderLayoutComponent } from './header-layout/header-layout.component';
 
 import {AdminRoutingModule} from './admin-routing.module';
 
+//metarial app
+import {MatButtonModule} from '@angular/material/button'; 
+import {MatToolbarModule} from '@angular/material/toolbar'; 
+import {MatIconModule} from '@angular/material/icon'; 
+//
 
 
 @NgModule({
   imports:[
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule
   ],
   exports:[
     MainLayoutComponent
