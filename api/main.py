@@ -1,7 +1,9 @@
 from controllers.request import *
 from helpers.general import general
+from flask_cors import CORS
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 gh = general()
 
 
@@ -37,4 +39,4 @@ api.add_resource(RequestController, '/request/<model>','/request/<model>/<id>') 
 
 
 if __name__ == '__main__':
-    app.run(port='5002')
+    app.run(port='5002',host='localhost')

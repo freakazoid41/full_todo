@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 //import plib
-import { plib } from '../../lib/plib';
+declare const Plib:any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,23 +12,22 @@ export class LoginComponent implements OnInit {
   username:string;
   password:string;
   warn:object;
-  plib:any;
+  plib :any;
 
-  constructor() {
+  constructor(private _snackBar: MatSnackBar) {
     //set warnings
     this.warn = {
       username:false,
       password:false
     } 
-
-    this.plib = new plib();
+    this.plib = new Plib();
   }
 
   ngOnInit(): void {
     
   }
 
-  login() { 
+  async login() { 
     let valid = true;
     for(let key in this.warn){
       if(this[key] === undefined || this[key] === ''){
@@ -39,18 +40,23 @@ export class LoginComponent implements OnInit {
         username:this.username,
         password:this.password
       };
-      console.log(obj);
+      
       //login request
-      const rsp = this.plib.request({
+      const rsp = await this.plib.request({
         url:'login',
         method:'POST',
         data:obj
       });
-      console.log(rsp);
+      if(rsp.rsp){
+        this.plib.login(true,rsp.data);
+      }else{
+        this._snackBar.open(rsp.msg, null, {
+          duration: 2000,
+          horizontalPosition:'end',
+          verticalPosition:'top'
+        });
+      }
     }
-
-
-    console.log(this.username);
   }
 
 

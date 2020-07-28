@@ -1,7 +1,6 @@
-export class plib{
+class Plib {
     constructor(){
-        this.api = 'http://tapi.picklecan.loc/';
-        console.log('falan')
+        this.api = 'http://localhost:5002/';
     }
 
     /**
@@ -19,6 +18,9 @@ export class plib{
         }
         let op = {
             method: rqs['method'],
+            headers: {
+               'X-TOKEN':sessionStorage.getItem('user_data') !== 'null' ? JSON.parse(sessionStorage.getItem('user_data'))['token'] : 'none'
+            },
         };
         if (rqs['method'] !== 'GET') {
             op.body = fD;
@@ -38,4 +40,20 @@ export class plib{
         }
         return rsp;
     }
+
+    /**
+     * manages login / logout transactions
+     * @param {bool} type 
+     * @param {json} data 
+     */
+    async login(type=true,data = null){
+        sessionStorage.setItem('user_data',data);
+        window.location.href = !type ? '/login' : '/admin';
+    }
+
+    getClient = () => sessionStorage.getItem('user_data');
 }
+
+
+
+
