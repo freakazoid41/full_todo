@@ -10,6 +10,8 @@ export class LoginComponent implements OnInit {
   username:string;
   password:string;
   warn:object;
+  plib:any;
+
   constructor() {
     //set warnings
     this.warn = {
@@ -17,17 +19,35 @@ export class LoginComponent implements OnInit {
       password:false
     } 
 
-    new plib();
+    this.plib = new plib();
   }
 
   ngOnInit(): void {
+    
   }
 
   login() { 
+    let valid = true;
     for(let key in this.warn){
-      this.warn[key] = this[key] === undefined || this[key] === '';
+      if(this[key] === undefined || this[key] === ''){
+        valid = false;
+        this.warn[key] = true;
+      }
     }
-
+    if(valid){
+      const obj = {
+        username:this.username,
+        password:this.password
+      };
+      console.log(obj);
+      //login request
+      const rsp = this.plib.request({
+        url:'login',
+        method:'POST',
+        data:obj
+      });
+      console.log(rsp);
+    }
 
 
     console.log(this.username);
