@@ -10,7 +10,12 @@ import {AdminRoutingModule} from './admin-routing.module';
 //metarial app
 import {MatButtonModule} from '@angular/material/button'; 
 import {MatToolbarModule} from '@angular/material/toolbar'; 
-import {MatIconModule} from '@angular/material/icon'; 
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card'; 
+import {MatListModule} from '@angular/material/list'; 
+import {MatInputModule} from '@angular/material/input'; 
+import { HistoryComponent } from './history/history.component'; 
+import { DashboardComponent } from './dashboard/dashboard.component';
 //
 
 
@@ -20,7 +25,10 @@ import {MatIconModule} from '@angular/material/icon';
     AdminRoutingModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
+    MatInputModule,
+    MatListModule
   ],
   exports:[
     MainLayoutComponent
@@ -28,7 +36,9 @@ import {MatIconModule} from '@angular/material/icon';
   declarations:[
     MainLayoutComponent,
     FooterLayoutComponent,
-    HeaderLayoutComponent
+    HeaderLayoutComponent,
+    DashboardComponent,
+    HistoryComponent
   ]
 
 })

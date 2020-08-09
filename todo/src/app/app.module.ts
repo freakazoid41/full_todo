@@ -14,8 +14,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import {MatFormFieldModule} from '@angular/material/form-field'; 
+import {MatIconModule} from '@angular/material/icon'; 
 //
 
 
@@ -34,6 +35,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatFormFieldModule,
     MatSnackBarModule,
     MatInputModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
     AdminModule,
   ],
   providers: [],

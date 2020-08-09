@@ -1,0 +1,8 @@
+.todo-input{
+    display: flex;
+    align-items: baseline;
+    justify-content:center;
+}
+.todo-input button{
+    margin-left: 35px;
+}

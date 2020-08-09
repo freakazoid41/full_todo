@@ -1,1 +1,18 @@
-<p>dashboard works!</p>
+<div style="margin: 30vh;">
+    <mat-card>
+        <div class="todo-input">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Do This" >
+            </mat-form-field>
+            <button mat-mini-fab color="primary"><mat-icon aria-hidden="false">send</mat-icon></button>
+        </div>
+        <mat-divider></mat-divider>
+        <mat-selection-list #shoes>
+            <mat-list-option *ngFor="let shoe of typesOfShoes">
+              {{shoe}}
+            </mat-list-option>
+          </mat-selection-list>
+    </mat-card>
+</div>
+
+
