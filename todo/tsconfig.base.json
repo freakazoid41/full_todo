@@ -19,6 +19,10 @@
       "plib": [
         "dist/plib/plib",
         "dist/plib"
+      ],
+      "plib1": [
+        "dist/plib1/plib1",
+        "dist/plib1"
       ]
     }
   }

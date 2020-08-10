@@ -24,6 +24,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/tabulator-tables/dist/css/materialize/tabulator_materialize.min.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
@@ -156,6 +157,46 @@
             "tsConfig": [
               "projects/plib/tsconfig.lib.json",
               "projects/plib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "plib1": {
+      "projectType": "library",
+      "root": "projects/plib1",
+      "sourceRoot": "projects/plib1/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/plib1/tsconfig.lib.json",
+            "project": "projects/plib1/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/plib1/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/plib1/src/test.ts",
+            "tsConfig": "projects/plib1/tsconfig.spec.json",
+            "karmaConfig": "projects/plib1/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/plib1/tsconfig.lib.json",
+              "projects/plib1/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
