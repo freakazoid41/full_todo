@@ -9,6 +9,7 @@ class main(object):
 
     def connect(self):
         self.conn = sqlite3.connect(str(Path.cwd())+'/data/pickle.db')
+        self.conn.row_factory = sqlite3.Row
         self.cur = self.conn.cursor()
         
 
@@ -37,7 +38,9 @@ class main(object):
                     csql+= where
             #execute sql
             self.cur.execute(sql)
-            rsp['data'] = self.cur.fetchall()
+            rsp['data'] = []
+            for row in self.cur:
+                rsp['data'].append(dict(zip(row.keys(), row)))
             
             self.cur.execute(csql)
             rsp['count'] = self.cur.fetchone()[0]
@@ -92,7 +95,6 @@ class main(object):
                 self.conn.close()    
             return rsp
 
-
     def delete(self,obj):
         self.connect()
         rsp = {'rsp':False}
@@ -119,3 +121,6 @@ class main(object):
             if self.conn is not None:
                 self.conn.close()    
             return rsp
+
+    def getlist(self):
+        pass

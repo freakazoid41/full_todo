@@ -22,12 +22,12 @@ class general():
             label = headers['User-Agent']
             #clean all old dated tokens
             users_keys.delete({
-                'user_id': str(u_obj['data'][0][0]),
+                'user_id': str(u_obj['data'][0]['id']),
                 'user_label':label
             })
             #add new token to database
             users_keys.insert({
-                'user_id': str(u_obj['data'][0][0]),
+                'user_id': str(u_obj['data'][0]['id']),
                 'user_label':label,
                 'user_key':token['token'],
                 'end_at':token['end_at']
@@ -37,7 +37,7 @@ class general():
                 'rsp':True,
                 'msg':'Logged In !!',
                 'data':{
-                    'id':str(u_obj['data'][0][0]),
+                    'id':str(u_obj['data'][0]['id']),
                     'token':token['token'],
                 }
             }
@@ -68,7 +68,7 @@ class general():
         })
         if token['rsp'] == True:
             #check date first
-            key_date = datetime.strptime(token['data'][0][4].split('.')[0], '%Y-%m-%d %H:%M:%S')
+            key_date = datetime.strptime(token['data'][0]['end_at'].split('.')[0], '%Y-%m-%d %H:%M:%S')
             duration = datetime.now() - key_date 
             diff = divmod(duration.total_seconds(), 60)[0]
             if  diff < 5:
@@ -80,7 +80,7 @@ class general():
                     #give another 30 minute
                     users_keys.update({
                         'end_at':str(datetime.now() + timedelta(minutes = 30))
-                    },token['data'][0][0])
+                    },token['data'][0]['user_key'])
                     return True
                 else:
                     return False    

@@ -13,7 +13,6 @@ export class AppComponent {
   
   constructor() {
     this.plib = new Plib();
-    console.log(this.plib.getClient()===null)
     if((this.plib.getClient()===null || this.plib.getClient() ==='null')&& window.location.pathname !== '/login'){
       this.plib.login(false);
     }else{

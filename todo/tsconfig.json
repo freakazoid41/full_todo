@@ -12,18 +12,6 @@
     },
     {
       "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/plib/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/plib/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/plib1/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/plib1/tsconfig.spec.json"
     }
   ],
 }

@@ -1,14 +1,18 @@
 from controllers.request import *
+from controllers.custom import *
+
 from helpers.general import general
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
 api = Api(app)
-CORS(app)
+CORS(app, resources={r'/*': {'origins': '*'}})
 gh = general()
 
 
 @app.before_request
 def enter():
+    if(request.method == 'OPTIONS'):return Response('Okey', 200)
     # request - flask.request
     if 'X-TOKEN' in request.headers or request.endpoint == 'login':
         if request.endpoint != 'login':
@@ -20,7 +24,7 @@ def enter():
         else:
             pass    
     else:
-        return Response('Token Is Not Valid..', 401)
+        return Response('Token Is Not Valid..', 407)
        
 
 '''@app.after_request
@@ -31,11 +35,17 @@ def exit(response):
 
 @app.route('/login', methods = ['POST'])
 def login():
-    return jsonify(gh.login(request.form,request.headers))
+    return gh.login(request.form,request.headers)
+
+@app.route('/custom/<model>', methods = ['POST'])
+def custom(model,id=None):
+    controller = CustomController()
+    return jsonify(getattr(controller, request.method.lower())(model))
 
         
+#api.add_resource(RequestController, '/request/<model>','/request/<model>/<id>') # Route_1
+#api.add_resource(CustomController, '/custom/<model>') # Route_
 
-api.add_resource(RequestController, '/request/<model>','/request/<model>/<id>') # Route_3
 
 
 if __name__ == '__main__':

@@ -16,19 +16,19 @@ class Plib {
         if (file !== null) {
             fD.append('file', file, file.name);
         }
+
         let op = {
+            //mode: 'no-cors',
             method: rqs['method'],
             headers: {
-               'X-TOKEN':sessionStorage.getItem('user_data') !== 'null' ? JSON.parse(sessionStorage.getItem('user_data'))['token'] : 'none'
-            },
+                'X-Token':sessionStorage.getItem('user_data') !== 'null' ? JSON.parse(sessionStorage.getItem('user_data'))['token'] : 'none'
+            }
         };
         if (rqs['method'] !== 'GET') {
             op.body = fD;
         }
-        const rsp = await fetch(this.api+rqs['url'], op).then((response) => {
-            //convert to json
-            return response.json();
-        });
+        console.log(op)
+        const rsp = await fetch(this.api+rqs['url'], op).then((resp) => resp.json());
         //in this point check if api is send timeout command 
         if (rsp.command !== undefined) {
             switch (parseInt(rsp.command)) {
@@ -47,7 +47,7 @@ class Plib {
      * @param {json} data 
      */
     async login(type=true,data = null){
-        sessionStorage.setItem('user_data',data);
+        sessionStorage.setItem('user_data',JSON.stringify(data));
         window.location.href = !type ? '/login' : '/admin';
     }
 
