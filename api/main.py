@@ -42,6 +42,11 @@ def custom(model,id=None):
     controller = CustomController()
     return jsonify(getattr(controller, request.method.lower())(model))
 
+@app.route('/request/<model>', methods = ['POST','GET','PATCH','DELETE'])
+@app.route('/request/<model>/<id>', methods = ['POST','GET','PATCH','DELETE'])
+def drequest(model,id=None):
+    controller = RequestController()
+    return jsonify(getattr(controller, request.method.lower())(model,id))
         
 #api.add_resource(RequestController, '/request/<model>','/request/<model>/<id>') # Route_1
 #api.add_resource(CustomController, '/custom/<model>') # Route_

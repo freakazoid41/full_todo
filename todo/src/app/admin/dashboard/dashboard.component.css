@@ -1,13 +1,9 @@
-.todo-input{
-    display: flex;
-    align-items: baseline;
-    justify-content:center;
-}
-.todo-input button{
-    margin-left: 35px;
+.card-todo{
+    width: 70%;
+    height: 70%;
 }
 
-.card-todo{
+.card-calendar{
     width: 70%;
     height: 70%;
 }

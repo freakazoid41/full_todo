@@ -1,28 +1,13 @@
-<div >
-    <mat-grid-list cols="3">
-        <mat-grid-tile [colspan]="2" [rowspan]="1">
-            <mat-card>
-                falan boyle
+<div>
+    <mat-grid-list rowHeight="93vh" cols="5">
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <mat-card style="width: 80%;">
+                <app-calendar-dash ></app-calendar-dash>
             </mat-card>
         </mat-grid-tile>
-
-
-        <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <mat-card class="card-todo">
-                <div class="todo-input">
-                    <mat-form-field class="example-full-width">
-                        <input matInput [(ngModel)]="nitem" placeholder="Bunu Yap !" >
-                        <mat-hint  [hidden]="!warn['nitem']"><span style="color: tomato;">Görev Giriniz !</span></mat-hint>
-                    </mat-form-field>
-                    <button (click)="addItem()" mat-mini-fab color="primary"><mat-icon aria-hidden="false">send</mat-icon></button>
-                </div>
-                <br>
-                <mat-divider></mat-divider>
-                <mat-selection-list #items>
-                    <mat-list-option (click)="itemEvent(indexOfelement,!item.selected)" id="{{item.id}}"  selected="{{item.selected}}" *ngFor="let item of titems;let indexOfelement=index;">
-                    {{item.title}}
-                    </mat-list-option>
-                </mat-selection-list>
+        <mat-grid-tile [colspan]="2" [rowspan]="1">
+            <mat-card style="width: 80%;">
+                <app-todo-dash class="card-todo"></app-todo-dash>
             </mat-card>
         </mat-grid-tile>
     </mat-grid-list> 

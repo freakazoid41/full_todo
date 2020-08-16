@@ -12,7 +12,7 @@ class RequestController(Resource):
         model = self.load(model)
         return model.update(request.form,id)
 
-    def post(self, model):
+    def post(self, model,id=None):
         model = self.load(model)
         return model.insert(request.form)
 
