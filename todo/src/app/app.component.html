@@ -1,7 +1,0 @@
-<div *ngIf="isloading;then loader else content">here is ignored</div>    
-<ng-template #content><router-outlet></router-outlet></ng-template>
-<ng-template #loader>
-    <div class="main_container">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-template>
