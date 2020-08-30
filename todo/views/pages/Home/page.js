@@ -1,6 +1,7 @@
 export default class Home{
 
-    constructor(elm){
+    constructor(elm,renderCallback = null){
+        this.renderCallback = renderCallback;
         this.referance = elm;
         this.loadCss();
     }
@@ -30,10 +31,14 @@ export default class Home{
                                             }
                                         </ul>
                                     </section>`;
+
+        await this.afterRender();
     }
 
 
-    async afterRender(){}
+    async afterRender(){
+        if(this.renderCallback !== null) this.renderCallback(this.referance);
+    }
 
 
 }

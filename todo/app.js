@@ -68,11 +68,12 @@ const router = async () => {
     const pageObj = routes[parsedURL] ? routes[parsedURL] : Error404;
     //ask if page layout is null
     if(pageObj.layout !== null){
-        await pageObj.layout.render(container);
-        await pageObj.layout.after_render(pageObj.page);
+        const layout = new pageObj.layout(container,pageObj.page);
+        layout.render();
+        
     }else{
-        await pageObj.page.render(container);
-        await pageObj.page.after_render();
+        /*await pageObj.page.render(container);
+        await pageObj.page.after_render();*/
     }
   
 

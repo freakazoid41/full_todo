@@ -2,9 +2,16 @@
 import NavBar       from '../../components/NavBar/component.js'
 import BottomBar    from '../../components/BottomBar/component.js'
 
+export default class TodoLayout{
 
-const TodoLayout = {
-    render : async (elm) => {
+    constructor(elm,page,renderCallback = null){
+        this.renderCallback = renderCallback;
+        this.page = page;
+        this.referance = elm;
+        this.loadCss();
+    }
+
+    loadCss(){
         const styles = [
             'views/layouts/TodoLayout/page.css'
         ];
@@ -17,32 +24,35 @@ const TodoLayout = {
             link.dataset.type='component';
             document.querySelector('head').appendChild(link);
         });
-        //render html to dom
-        elm.innerHTML = `<div id="header_container"></div>
+    }
 
-                        <div id="page_container">
-                            <article> Loading....</article>
-                        </div>
+    async render(){
+        this.referance.innerHTML =` <div id="header_container"></div>
 
-                        <div id="footer_container"></div>`;
-    },
-    after_render: async (referance) => {
-             
+                                    <div id="page_container">
+                                        <article> Loading....</article>
+                                    </div>
 
+                                    <div id="footer_container"></div>`;
+        
+        await this.afterRender();
+    }
+
+
+    async afterRender(){
         const header = new NavBar(document.getElementById('header_container'));
         await header.render();
-        await header.afterRender();
 
         const footer = new BottomBar(document.getElementById('footer_container'));
         await footer.render();
-        await footer.afterRender();
 
-
-        const page = new referance(document.getElementById('page_container'));
+        //page referance
+        const page = new this.page(document.getElementById('page_container'));
         await page.render();
-        await page.afterRender();
+
+        if(this.renderCallback !== null) this.renderCallback(this.referance);
     }
-        
+
+
 }
 
-export default TodoLayout;

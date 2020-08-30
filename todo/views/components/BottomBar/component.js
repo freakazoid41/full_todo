@@ -1,6 +1,7 @@
 export default class BottomBar{
 
-    constructor(elm){
+    constructor(elm,renderCallback = null){
+        this.renderCallback = renderCallback;
         this.referance = elm;
         this.loadCss();
     }
@@ -33,10 +34,14 @@ export default class BottomBar{
                                             
                                         </div>
                                     </footer>`;
+        await this.afterRender();                            
     }
 
 
-    async afterRender(){}
+    async afterRender(){
+
+        if(this.renderCallback !== null) this.renderCallback(this.referance);
+    }
 
 
 }

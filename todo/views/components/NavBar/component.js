@@ -1,6 +1,7 @@
 export default class NavBar{
 
-    constructor(elm){
+    constructor(elm,renderCallback = null){
+        this.renderCallback = renderCallback;
         this.referance = elm;
         this.loadCss();
     }
@@ -56,10 +57,13 @@ export default class NavBar{
                                             </form>
                                         </div>
                                     </nav>`;
+        await this.afterRender();
     }
 
 
-    async afterRender(){}
+    async afterRender(){
+        if(this.renderCallback !== null) this.renderCallback(this.referance);
+    }
 
 
 }
