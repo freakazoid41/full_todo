@@ -8,7 +8,7 @@ export default class About{
 
     loadCss(){
         const styles = [
-            'views/pages/Home/page.css'
+            'views/pages/About/page.css'
         ];
          
         //render css elements to dom
