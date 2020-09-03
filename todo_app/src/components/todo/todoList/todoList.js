@@ -29,22 +29,21 @@ export default class TodoList extends Component {
     render(){
         return  <List component="nav"  aria-label="contacts">
                     {
-
                         //foreach key in object list
                         Object.keys(this.state).map((key, index) => {
                             //return list item foreach one
-                            return(<ListItem button>
-                                <Checkbox
-                                    defaultChecked={this.state[key].checked}
-                                    color="primary"
-                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                />
-                                <ListItemText primary={this.state[key].name} />
-                                <IconButton variant="outlined" color="secondary" aria-label="delete">
-                                    <DeleteRoundedIcon/>
-                                </IconButton>
-                               
-                            </ListItem>)
+                            return  <ListItem button key={key}>
+                                        <Checkbox
+                                            defaultChecked={this.state[key].checked}
+                                            color="primary"
+                                            inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                        />
+                                        <ListItemText primary={this.state[key].name} />
+                                        <IconButton variant="outlined" color="secondary" aria-label="delete">
+                                            <DeleteRoundedIcon/>
+                                        </IconButton>
+                                    
+                                    </ListItem>
                         })
                     }
                 </List>
