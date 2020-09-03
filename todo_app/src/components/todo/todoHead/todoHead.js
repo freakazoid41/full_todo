@@ -3,23 +3,21 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
+const styles = {
+    input_div:{
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-between',
+    },
+}
 
 const TodoHead = ()=>{
-    const styles = {
-        input_div:{
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'space-between',
-        },
-    }
-
-
-    return (<div style={styles.input_div}>
+    return  <div style={styles.input_div}>
                 <TextField id="outlined-basic" style={{width: '100%'}}/> 
                 <IconButton color="primary" aria-label="add to shopping cart">
                     <AddIcon />
                 </IconButton>
-            </div>)
+            </div>
 }
 
 export default TodoHead;
