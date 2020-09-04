@@ -11,7 +11,7 @@ export default class Todo extends Component{
     
     getCss(){
         return {
-            div_main:{
+            /*div_main:{
                 display:'flex',
                 flexDirection:'column',
                 alignItems:'center',
@@ -20,7 +20,7 @@ export default class Todo extends Component{
                 textAlign: 'center',
                 height: '100vh',
                 width: '100%',
-            },
+            },*/
             main_card:{
                 width: '50vh'
             }

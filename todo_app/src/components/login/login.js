@@ -6,20 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-
-
-
-
 class Login extends Component {
     getCss(){
         return {
-            div_main:{
-                display:'flex',
-                flexDirection:'column',
-                alignItems:'center',
-                justifyContent:'center',
-                height:'100vh'
-            },
             button:{
                 marginTop:'15px',
                 height:'60px'
@@ -32,7 +21,6 @@ class Login extends Component {
         const styles = this.getCss();
         return (
             <Container component="main"  maxWidth="xs">
-            <div style={styles.div_main}>
                 <Card variant="outlined">
                     <CardContent>
                         <Typography component="h1" variant="h5">
@@ -72,8 +60,6 @@ class Login extends Component {
                         </Button>
                     </CardContent>
                 </Card>
-            </div>
-           
             </Container>
         );
     }
