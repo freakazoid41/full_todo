@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
-import { AnimateOnChange } from 'react-animation'
+import { AnimateOnChange } from 'react-animation';
 import Plib from './libraries/plib';
+import 'react-notifications/lib/notifications.css';
 import './App.css';
 import Login from './components/login/login';
 import Todo from './components/todo/todo';
 
+import { connect } from "react-redux";
+const reduxObj = {
+  data: (state) =>{
+      //new state has came..
+      console.log(state);
+      return {state:state}
+  },
+};
 
 
 class App extends Component{
@@ -13,12 +22,12 @@ class App extends Component{
     this.plib = new Plib();
 
 
-    this.state = {isLoggedIn: false};
-    this.groupProps = {
-      appear: false,
-      enter: true,
-      exit: true,
+    this.state = {
+      isLoggedIn: false,
+      message:'sdasas',
+      open:'true',
     };
+    
   }
 
 
@@ -48,9 +57,10 @@ class App extends Component{
     }
     return (
       <div style={styles.div_main}>
-        <AnimateOnChange>
-        { elms[Number(this.state.isLoggedIn)]}
-        </AnimateOnChange>
+          <div>{JSON.stringify(this.props.state)}</div>
+          <AnimateOnChange>
+          { elms[Number(this.state.isLoggedIn)]}
+          </AnimateOnChange>
       </div>
     );
   }
@@ -59,4 +69,5 @@ class App extends Component{
 
 }
 
-export default App;
+//export default App;
+export default connect(reduxObj.data,null)(App);

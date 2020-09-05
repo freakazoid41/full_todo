@@ -1,6 +1,6 @@
 export default class Plib {
     constructor(){
-        console.log('falan boyle');
+        this.apiUrl = 'http://localhost:5002/';
     }
 
 
@@ -23,7 +23,7 @@ export default class Plib {
         if (rqs['method'] !== 'GET') {
             op.body = fD;
         }
-        const rsp = await fetch(rqs['url'], op).then((response) => response.json());
+        const rsp = await fetch(this.apiUrl+rqs['url'], op).then((response) => response.json());
         //in this point check if api is send timeout command 
         /*if (rsp.command !== undefined) {
             switch (parseInt(rsp.command)) {
