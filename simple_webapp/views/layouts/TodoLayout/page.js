@@ -4,11 +4,12 @@ import BottomBar    from '../../components/BottomBar/component.js'
 
 export default class TodoLayout{
 
-    constructor(elm,page,renderCallback = null){
+    constructor(elm,page,renderCallback = null,redirectCallback = null){
         this.renderCallback = renderCallback;
+        this.redirectCallback = redirectCallback;
         this.page = page;
         this.referance = elm;
-        this.loadCss();
+        
     }
 
     loadCss(){
@@ -21,15 +22,16 @@ export default class TodoLayout{
             const link = document.createElement('link');
             link.href = el;
             link.rel  = 'stylesheet';
-            link.dataset.type='component';
+            link.dataset.type='layout';
             document.querySelector('head').appendChild(link);
         });
     }
 
     async render(){
+        this.loadCss();
         this.referance.innerHTML =` <div id="header_container"></div>
 
-                                    <div id="page_container">
+                                    <div data-layout="TodoLayout" id="page_container">
                                         <article> Loading....</article>
                                     </div>
 
@@ -38,6 +40,11 @@ export default class TodoLayout{
         await this.afterRender();
     }
 
+    async redirect(){
+        const page = new this.page(document.getElementById('page_container'));
+        await page.render();
+        if(this.redirectCallback !== null) this.redirectCallback(this.referance);
+    }
 
     async afterRender(){
         const header = new NavBar(document.getElementById('header_container'));

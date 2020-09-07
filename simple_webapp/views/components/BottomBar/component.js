@@ -3,7 +3,7 @@ export default class BottomBar{
     constructor(elm,renderCallback = null){
         this.renderCallback = renderCallback;
         this.referance = elm;
-        this.loadCss();
+        
     }
 
     loadCss(){
@@ -16,13 +16,14 @@ export default class BottomBar{
             const link = document.createElement('link');
             link.href = el;
             link.rel  = 'stylesheet';
-            link.dataset.type='component';
+            link.dataset.type='layout_component';
             document.querySelector('head').appendChild(link);
         });
     }
 
     async render(){
-        this.referance.innerHTML =`<footer>
+        this.loadCss();
+        this.referance.innerHTML +=`<footer>
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="card text-center">

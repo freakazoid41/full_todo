@@ -3,7 +3,7 @@ export default class About{
     constructor(elm,renderCallback = null){
         this.renderCallback = renderCallback;
         this.referance = elm;
-        this.loadCss();
+        
     }
 
     loadCss(){
@@ -15,13 +15,14 @@ export default class About{
         styles.forEach(el=>{
             const link = document.createElement('link');
             link.href = el;
-            link.dataset.type='component';
+            link.dataset.type='page';
             link.rel  = 'stylesheet';
             document.querySelector('head').appendChild(link);
         });
     }
 
     async render(){
+        this.loadCss();
         this.referance.innerHTML = `<section class="">
                                         <h1> About </h1>
                                         <ul>

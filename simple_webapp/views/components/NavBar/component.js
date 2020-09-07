@@ -3,12 +3,11 @@ export default class NavBar{
     constructor(elm,renderCallback = null){
         this.renderCallback = renderCallback;
         this.referance = elm;
-        this.loadCss();
     }
 
     loadCss(){
         const styles = [
-            'views/components/'+this.constructor.name+'/component.css'
+            'views/components/'+this.constructor.name+'/component.css?v='+(new Date).getTime()
         ];
          
         //render css elements to dom
@@ -16,47 +15,45 @@ export default class NavBar{
             const link = document.createElement('link');
             link.href = el;
             link.rel  = 'stylesheet';
-            link.dataset.type='component';
+            link.dataset.type='layout_component';
             document.querySelector('head').appendChild(link);
         });
     }
 
     async render(){
-        this.referance.innerHTML =`<nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                        <a class="navbar-brand" href="#">Navbar</a>
-                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                            <span class="navbar-toggler-icon"></span>
-                                        </button>
-                                    
-                                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                            <ul class="navbar-nav mr-auto">
-                                                <li class="nav-item active">
-                                                    <a class="nav-link" href="/#/">Home <span class="sr-only">(current)</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                <a class="nav-link" href="/#/about">About</a>
-                                                </li>
-                                                <li class="nav-item dropdown">
-                                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Dropdown
-                                                    </a>
-                                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                                                </li>
-                                            </ul>
-                                            <form class="form-inline my-2 my-lg-0">
-                                                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                                            </form>
+        this.loadCss();
+        this.referance.innerHTML = `<div class="row ns div_header">
+                                        <div class="col">
+                                            <a href="/#/" class="header_btn">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                                <span>Home</span>
+                                            </a>
                                         </div>
-                                    </nav>`;
+                                        <div class="col">
+                                            <a href="/#/about" class="header_btn">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                                <span>Ayarlar</span>
+                                            </a>
+                                        </div>
+                                        <div class="col">
+                                            <span class="header_btn">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                                <span>Ayarlar</span>
+                                            </span>
+                                        </div>
+                                        <div class="col">
+                                            <span class="header_btn">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                                <span>Ayarlar</span>
+                                            </span>
+                                        </div>
+                                        <div class="col">
+                                            <span class="header_btn">
+                                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                                <span>Ayarlar</span>
+                                            </span>
+                                        </div>
+                                    </div>`;
         await this.afterRender();
     }
 
