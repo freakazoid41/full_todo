@@ -1,24 +1,14 @@
-"use strict";
-
-import TodoLayout  from './views/layouts/TodoLayout/page.js';
-import Home        from './views/pages/Home/page.js'
-import About       from './views/pages/About/page.js'
-
-
-
-
-
 import Utils        from './services/Utils.js'
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 const routes = {
     '/':{
-        page:Home,
-        layout:TodoLayout
+        page:'Home',
+        layout:'TodoLayout'
     },
     '/about':{
-        page:About,
-        layout:TodoLayout
+        page:'About',
+        layout:'TodoLayout'
     },
     '/login':{
         page:'Login',
@@ -42,19 +32,8 @@ const router = async () => {
         el.outerHTML = '';
     });
 
-
-
-    let container = null || document.getElementById('div_container');
-    // Lazy load view element:
-    /*const header = null || document.getElementById('header_container');
-    const content = null || document.getElementById('page_container');
-    const footer = null || document.getElementById('footer_container');*/
-    
-    // Render the Header and footer of the page
-    /*header.innerHTML = await Navbar.render();
-    await Navbar.after_render();
-    footer.innerHTML = await Bottombar.render();
-    await Bottombar.after_render();*/
+    const container = null || document.getElementById('div_container');
+   
 
 
     // Get the parsed URl from the addressbar
@@ -68,9 +47,14 @@ const router = async () => {
     const pageObj = routes[parsedURL] ? routes[parsedURL] : Error404;
     //ask if page layout is null
     if(pageObj.layout !== null){
-        const layout = new pageObj.layout(container,pageObj.page);
+        //import page
+        const page = await import('./views/pages/'+pageObj.page+'/page.js');
+
+        //import layout
+        let layout = await import('./views/layouts/'+pageObj.layout+'/page.js');
+        layout = new layout.default(container,page.default)
         layout.render();
-        
+
     }else{
         /*await pageObj.page.render(container);
         await pageObj.page.after_render();*/
