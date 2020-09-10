@@ -1,0 +1,31 @@
+body{
+    background-color: whitesmoke;
+}
+
+a:link { 
+    text-decoration: none; 
+} 
+a:hover { 
+    text-decoration: none; 
+} 
+#footer_container{
+    justify-content: center;
+    display: flex;
+}
+#header_container{
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#page_container{
+    height: 70vh;
+}
+.main_section{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+.main_section .main_card{
+    width: 75%;
+}
