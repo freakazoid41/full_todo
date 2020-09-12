@@ -1,36 +1,60 @@
-<?php
+<?php 
 
-namespace SUMO;
-include 'autoloader.php';
 
-$rurl = $_GET['requesturl'];
-if(!preg_match('/^[a-z]+\/[a-z]+[\/a-z0-9]*$/', $rurl, $matches)) {
-	die('bad request (invalid characters)');
-}
-$path = explode('/', $rurl, 3);
-if(count($path) < 2 || empty($path[0]) || empty($path[1])) {
-	die('bad request (no endpoints defined');
-}
-else {
-	$oricls = $path[0];
-	$cls = ucfirst($path[0]);
-	$fullcls = "SUMO\\Api\\Responders\\$cls";
-	$mth = $path[1];
+namespace app;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-	if(!file_exists('Responders/'.$cls.'.php')) {
-		die('bad endpoint (invalid class)');
-	}
+//include routing from library
+require_once "libraries/routing.php";
+use app\library\routing\Routing as routing; 
 
-	$$oricls = new $fullcls;
+//initialize app
+$app = new routing();
 
-	if(!method_exists($$oricls, $mth)) {
-		die('bad endpoint (invalid method)');
-	}
+$app->route('/', function () {
+    return "Hello World";
+});
 
-	if(count($path) == 2) {
-		$$oricls->$mth();
-	}
-	else {
-		$$oricls->$mth($path[2]);
-	}
-}
+
+$app->route('/request/*', function ($parts,$request) {
+    print_r($request);
+    //we are in request route
+    //this route is for only system requests
+    //1.part is model name
+    //2.part is id for get,patch or delete transactions
+    switch($request){
+        case "GET":
+            //get request for data getting
+        break;
+        case "POST":
+            //post request for data setting
+        break;
+        case "PATCH":
+            //patch request for data updating
+        break;
+        case "DELETE":
+            //delete request for data removing
+        break;
+    }
+
+
+
+
+    print_r($parts);
+    return "Bura Modül";
+});
+
+
+$app->route('/about', function () {
+    return "Hello form the about route";
+});
+
+$app->route('/err404', function () {
+    header("HTTP/1.0 404 Not Found");
+    return "Not Available";
+});
+
+$action = $_SERVER['REQUEST_URI'];
+$app->dispatch($action);
