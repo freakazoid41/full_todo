@@ -1,6 +1,6 @@
 <?php
 //this file will contain db parameters of project
-namespace app\config\database;
+namespace app\config;
 
 class Database {
     /**

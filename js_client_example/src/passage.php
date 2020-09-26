@@ -9,22 +9,22 @@
     private $token = '-';
     private $pid = 0;
     private $api_url; 
-    private $cdn_url = 'http://cache.cilogluarge.com/fresolver.php';
+    //private $cdn_url = 'http://cache.cilogluarge.com/fresolver.php';
 
     private $permissions = array(
-      'sys_feedback',
-      'sys_demands',
+      //'sys_users',
+      //'sys_demands',
     );
 
     function __construct()
     {
 
-      $this->api_url = $_SERVER['HTTP_HOST'] === 'lb.cilogluarge.com' ? 'http://sapi.cilogluarge.com/': 'http://sapi.picklecan.loc/';
-
+      //$this->api_url = $_SERVER['HTTP_HOST'] === 'lb.cilogluarge.com' ? 'http://sapi.cilogluarge.com/': 'http://sapi.picklecan.loc/';
+      $this->api_url = 'http://rapi.picklecan.loc/';
 
       //set session informations to params if logged in
       if(isset($_SESSION['sinfo'])){
-        $this->pid = $_SESSION['sinfo']['person_id'];
+        $this->uid = $_SESSION['sinfo']['user_id'];
         $this->token = $_SESSION['sinfo']['token'];
       }
     }
@@ -54,7 +54,6 @@
                 if ($data)
                     $url = sprintf("%s?%s", $url, http_build_query($data));
         }
-       
         // OPTIONS:
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
@@ -75,37 +74,18 @@
 
 
     function login($data){
-      $data = array_merge($_GET,$_POST);
+      //$data = array_merge($_GET,$_POST);
       $response = $this->call(
         array('username'=>$data['username'],'password'=>$data['password']),
         'POST',
-        'login'
+        'admin_login'
       );
       $data = json_decode($response,true);
       if($data['rsp']){
         //set session info
         $_SESSION['sinfo'] = $data['data'];
-        //set token
       }
       return $response;
-    }
-
-    //temperory external login function
-    function temp_login($data){
-      $data = array_merge($_GET,$_POST);
-      $response = $this->call(
-        array('username'=>$data['username'],'password'=>$data['password']),
-        'POST',
-        'login'
-      );
-      $data = json_decode($response,true);
-      if($data['rsp']){
-        //set session info
-        $_SESSION['sinfo'] = $data['data'];
-        //set token
-      }
-      header("Location: /#/help");
-      die();
     }
 
     /**
@@ -114,33 +94,32 @@
     public function event($data){
       $response = array();
       //check model permission
-      if(in_array($data['model'],$this->permissions)){
+      //if(in_array($data['model'],$this->permissions)){
           $data['data'] = json_decode($data['data'],true);
-          $data['data']['person_id'] = $this->pid;
+          //$data['data']['person_id'] = $this->pid;
           unset($data['data']['event']);
-      
           //file transactions
-          if (isset($_FILES['file']['name']) && !empty($_FILES['file']['name'])) {
+          /* if (isset($_FILES['file']['name']) && !empty($_FILES['file']['name'])) {
             $fresponse = $this->saveFile($_FILES,$data);
             if(boolval($fresponse['rsp']) != true){
               return json_encode(array('rsp'=>false,'msg'=>'CDN Not Saved File !!','cdn_rsp'=>$fresponse));
             }else{
               $data['data']['l_file'] = $fresponse['file'];
             }
-          }
+          }*/
           switch($data['event']){
             case 'add':
               $response = $this->call($data['data'],'POST','request/'.$data['model']);
             break;
-            /*case 'update':
-              $response = $this->request->call($data['data'],'PATCH','request/'.$data['model']);
+            case 'update':
+              $response = $this->call($data['data'],'PATCH','request/'.$data['model'].'/'.$data['data']['id']);
             break;
             case 'delete':
-              $response = $this->request->call($data['data'],'DELETE','request/'.$data['model']);
-            break;*/
+              $response = $this->call($data['data'],'DELETE','request/'.$data['model'].'/'.$data['data']['id']);
+            break;
           }
       
-      }
+      //}
       return $response;
     }
 
@@ -148,7 +127,7 @@
      * this function vill save file to cdn
      */
     function saveFile($file,$data){
-      $allowed = array('gif', 'png', 'jpg', 'jpeg','pdf');
+      /*$allowed = array('gif', 'png', 'jpg', 'jpeg','pdf');
       if (in_array(pathinfo($file['file']['name'], PATHINFO_EXTENSION), $allowed)) {
           $filename = $data['model'].'tempfile.'.pathinfo($file['file']['name'], PATHINFO_EXTENSION);
           //first save for temperory
@@ -171,7 +150,7 @@
           return json_decode($result,true);
       }else{
           return array('rsp'=>false);
-      }
+      }*/
 
     }
 
@@ -192,14 +171,13 @@
     public function data($data){
       $response = array();
       switch($_GET['event']){
-        /*case 'get':
+        case 'get':
           //choose type
-          $data = $this->input->post();
           $url = 'request/'.$data['model'];
-          if($this->input->get('id')) $url.='/'.$this->input->get('id');
-          $response = $this->request->call($data,'GET',$url);
+          if(isset($_GET['id'])) $url.='/'.$_GET['id'];
+          $response = $this->call(null,'GET',$url);
         break;
-        case 'query':
+        /*case 'query':
           //choose type
           $data = $this->input->post();
           $url = 'query/'.$data['model'];
@@ -216,7 +194,7 @@
           if($response['rsp'])$response['data'] = $_SESSION['sinfo'];
           $response = json_encode($response);
         break;
-        case '_getList':
+        /*case '_getList':
           //choose type
           //set person id
           $filter = array(
@@ -232,7 +210,7 @@
           }
           $data['person_id'] = $this->pid;
           $response = $this->call($data,'POST','table/'.$data['model']);
-        break;
+        break;*/
       }
   
       return $response;

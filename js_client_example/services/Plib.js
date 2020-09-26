@@ -1,7 +1,6 @@
 export default class Plib{
     constructor(){
-        this.ReqUrl = '/requestApi';
-        this.CdnUrl = 'http://cache.cilogluarge.com';
+        //this.CdnUrl = 'http://cache.cilogluarge.com';
     }
 
 
@@ -64,7 +63,7 @@ export default class Plib{
      * this function will ask client to session information 
      */
     async checkSession(){
-        if(sessionStorage.getItem('sinfo') === null){
+        if(sessionStorage.getItem('sinfo') === null || sessionStorage.getItem('sinfo') === '-1'){
             //ask session  info to client
             return await this.request({
                 method: 'POST',
@@ -78,6 +77,7 @@ export default class Plib{
         }else{
             return true;
         }
+        return true;
     }
 
     /**
@@ -93,7 +93,7 @@ export default class Plib{
             timer: 3000,
 
         }).fire({
-            type: type,
+            icon: type,
             title: msg,
             heightAuto: true
         });
@@ -101,7 +101,6 @@ export default class Plib{
 
     /**
      * Clear all items
-     * @param {string} type 
      * @param {string} selector 
      */
     clearElements(selector) {
@@ -132,5 +131,31 @@ export default class Plib{
         for (let i = 0; i < elms.length; i++) {
             elms[i].style.display = 'none';
         }
+    }
+
+    /**
+     * Get form element with validation
+     * @param {string} selector 
+     */
+    checkForm(selector){
+        const rsp = {
+            obj:{},
+            valid:true
+        }
+        //get elements
+        const elms = document.querySelectorAll(selector);
+        for(let i=0;i<elms.length;i++){
+            //validate
+            if(elms[i].value.trim() !== ''){
+                rsp.obj[elms[i].name] = elms[i].value;
+                elms[i].classList.remove('is-invalid');
+            }else{
+                if(elms[i].required){
+                    elms[i].classList.add('is-invalid');
+                    rsp.valid = false;
+                }
+            }
+        }
+        return rsp;
     }
 }

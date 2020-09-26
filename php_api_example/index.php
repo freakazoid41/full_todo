@@ -7,8 +7,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 //include routing from library
-require_once "libraries/routing.php";
-use app\library\routing\Routing as routing; 
+require_once "libraries/Routing.php";
+use app\library\Routing as routing; 
 
 //initialize app
 $app = new routing();
@@ -18,37 +18,26 @@ $app->route('/', function () {
 });
 
 
-$app->route('/request/*', function ($parts,$request) {
-    print_r($request);
+$app->route('/request/*', function ($parts,$request,$headers) {
+    require_once "controllers/System.php";
+    $controller = new controllers\System(); 
     //we are in request route
     //this route is for only system requests
-    //1.part is model name
-    //2.part is id for get,patch or delete transactions
-    switch($request){
-        case "GET":
-            //get request for data getting
-        break;
-        case "POST":
-            //post request for data setting
-        break;
-        case "PATCH":
-            //patch request for data updating
-        break;
-        case "DELETE":
-            //delete request for data removing
-        break;
-    }
-
-
-
-
-    print_r($parts);
-    return "Bura Modül";
+    //this why we will wait return from system controller
+    header('Content-Type: application/json');
+    return \json_encode($controller->handleRequest($parts,$request));
 });
 
 
-$app->route('/about', function () {
-    return "Hello form the about route";
+$app->route('/admin_login', function ($parts,$request,$headers) {
+    //this rpute is just for admin login
+    require_once "controllers/System.php";
+    $controller = new controllers\System(); 
+    //wait return from login 
+    //set admin type
+    $_POST['utype'] = 1;
+    header('Content-Type: application/json');
+    return \json_encode($controller->login($_POST,$headers));
 });
 
 $app->route('/err404', function () {

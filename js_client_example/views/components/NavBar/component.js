@@ -22,53 +22,28 @@ export default class NavBar{
 
     async render(){
         this.loadCss();
-        this.referance.innerHTML = `<div class="row ns div_header shadow" id="div_header">
-                                        <div class="col">
-                                            <a href="/#/" class="header_btn disabled_area">
-                                                <i class="fa fa-tachometer" aria-hidden="true"></i>
-                                                <span>Anasayfa</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <span class="header_btn disabled_area">
-                                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                                <span>Ayarlar</span>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <span class="header_btn disabled_area">
-                                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                                <span>Ayarlar</span>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <span class="header_btn disabled_area">
-                                                <i class="fa fa-cog" aria-hidden="true"></i>
-                                                <span>Ayarlar</span>
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <a href="/#/help" class="header_btn">
-                                                <i class="fa fa-question" aria-hidden="true"></i>
-                                                <span>Yardım</span>
-                                            </a>
-                                        </div>
-                                    </div>`;
+        this.referance.innerHTML = `<header class="shadow">
+                                        <a href="/#/" class="logo">Logo</a>
+                                        <button data-url="/#/settings" class="header_btn">Settings</button>
+                                        <button data-url="/#/persons" class="header_btn">Persons</button>
+                                        <button data-url="/#/items" class="header_btn">Items</button>
+                                        <button data-url="/#/transactions" class="header_btn">Transactions</button>
+                                    </header>`;
         await this.afterRender();
     }
 
 
     async afterRender(){
+        await this.setEvents();
+    
         if(this.renderCallback !== null) this.renderCallback(this.referance);
-
-        this.setEvents();
     }
 
 
     async setEvents(){
-        document.getElementById('div_header').addEventListener('click',e=>{
+        document.body.addEventListener('click',e=>{
             if(e.target.classList.contains('header_btn')){
-                console.log(e.target)
+                window.location.href = e.target.dataset.url;
                 const elms = document.querySelectorAll('.header_btn');
                 for(let i=0;i<elms.length;i++){
                     if(elms[i] === e.target){

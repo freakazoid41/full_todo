@@ -1,20 +1,32 @@
-import Utils        from './services/Utils.js'
-import Plib        from './services/Plib.js'
+import Utils  from './services/Utils.js'
+import Plib   from './services/Plib.js'
 
 
 // List of supported routes. Any url other than these routes will throw a 404 error
 const routes = {
     '/':{
         page:'Home',
-        layout:'TodoLayout'
+        layout:'AdminLayout'
     },
-    '/about':{
-        page:'About',
-        layout:'TodoLayout'
+    '/home':{
+        page:'Home',
+        layout:'AdminLayout'
     },
-    '/help':{
-        page:'Help',
-        layout:'TodoLayout'
+    '/settings':{
+        page:'Settings',
+        layout:'AdminLayout'
+    },
+    '/persons':{
+        page:'Persons',
+        layout:'AdminLayout'
+    },
+    '/items':{
+        page:'Items',
+        layout:'AdminLayout'
+    },
+    '/transactions':{
+        page:'Transactions',
+        layout:'AdminLayout'
     },
     '/login':{
         page:'Login',
@@ -55,42 +67,36 @@ const router = async () => {
         //import page
         let page = await import('./views/pages/'+pageObj.page+'/page.js');
         
-        //check layout is diffrent 
-        if(document.querySelector('[data-layout="'+pageObj.layout+'"]')== null){
-            //clean old css files if exist
-            document.querySelectorAll('link[data-type="layout_component"]').forEach(el=>{
-                el.outerHTML = '';
-            });
-
-            //clean old layout css files if exist
-            document.querySelectorAll('link[data-type="layout"]').forEach(el=>{
-                el.outerHTML = '';
-            });
-
-            //ask if page layout is null
-            if(pageObj.layout !== null){
-                //import layout
-                let layout = await import('./views/layouts/'+pageObj.layout+'/page.js');
-                layout = new layout.default(container,page.default)
-                layout.render();
-            }else{
-                page = new page.default(container);
-                page.render();
-            }
-        }else{
-
+        //check if has layout
+        if(pageObj.layout !== null){
             //import layout
             let layout = await import('./views/layouts/'+pageObj.layout+'/page.js');
             layout = new layout.default(container,page.default)
-            layout.redirect();
+            //check layout is diffrent 
+            if(document.querySelector('[data-layout="'+pageObj.layout+'"]')== null){
+                //clean old css files if exist
+                document.querySelectorAll('link[data-type="layout_component"]').forEach(el=>{
+                    el.outerHTML = '';
+                });
+
+                //clean old layout css files if exist
+                document.querySelectorAll('link[data-type="layout"]').forEach(el=>{
+                    el.outerHTML = '';
+                });
+                layout.render();
+            }else{
+                layout.redirect();
+            }
+        }else{
+            page = new page.default(container);
+            page.render();
         }
     }else{
-        console.log('logine geldim ben..')
-        //import login page
-        /*let page = await import('./views/pages/Login/page.js');
+        //import page
+        let page = await import('./views/pages/Login/page.js');
         page = new page.default(container);
-        page.render();*/
-        //window.location.href = 'http://lb.ciloglunet.com';
+        page.render();
+        console.log('Amcık nereye gidiyon sen ?? ..')
     }
 }
 

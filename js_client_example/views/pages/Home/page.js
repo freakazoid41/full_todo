@@ -24,9 +24,14 @@ export default class Home{
     async render(){
         this.loadCss();
         this.referance.innerHTML = `<section class="main_section fade-in">
-                                        <div class=" card main_card shadow">
-                                            falan boyle
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card fluid main_card shadow">
+                                                    falan boyle
+                                                </div>
+                                            </div>
                                         </div>
+                                        
                                     </section>`;
 
         await this.afterRender();
