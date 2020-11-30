@@ -25,7 +25,12 @@ class System{
 					'id'=>isset($parts[2]) ? $parts[2] : '-1'
 				));
             break;
-            case "POST":
+			case "POST":
+				//check if is table data request
+				if(isset($_POST['rtype']) && $_POST['rtype'] = 'table'){
+					unset($_POST['rtype']);
+					return $model->getTable(json_decode($_POST['data'],true));
+				}
 				//post request for data setting
 				return $model->add($_POST);
             break;

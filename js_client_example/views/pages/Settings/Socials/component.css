@@ -1,0 +1,5 @@
+#sel_icon > option,
+#sel_icon{
+    font-family: sans-serif,"Font Awesome 5 Free" !important;
+    font-weight: 600 !important;
+}

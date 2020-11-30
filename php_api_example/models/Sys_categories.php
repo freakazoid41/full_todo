@@ -3,7 +3,7 @@
 namespace app\models;
 
 
-require_once "main.php";
+require_once "Main.php";
 use app\models\Main as Main; 
 
 

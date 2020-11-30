@@ -19,14 +19,14 @@ class Main extends db{
      * table name
      * @var string
      */
-    private $table = 'no_name';
+    protected $table = 'no_name';
 
 
     /**
      * Connection
      * @var object 
      */
-    private $conn;
+    protected $conn;
 
 
     /**
@@ -48,6 +48,7 @@ class Main extends db{
     public function get($obj = null){
         $select = [];
         foreach($this->keys as $c){
+            if($c != 'table' && $c != 'conn' )
             array_push($select,'i.'.$c);
         }
         //build sql

@@ -88,6 +88,12 @@
       return $response;
     }
 
+
+    function logout(){
+      session_destroy();
+      header('Location: /');
+    }
+
     /**
      * this method will send event info to api
      */
@@ -176,6 +182,12 @@
           $url = 'request/'.$data['model'];
           if(isset($_GET['id'])) $url.='/'.$_GET['id'];
           $response = $this->call(null,'GET',$url);
+        break;
+        case 'getTable':
+          //choose type
+          $data['data'] = $data['tableReq'];
+          $data['rtype'] = 'table';
+          $response = $this->call($data,'POST','request/'.$_GET['model']);
         break;
         /*case 'query':
           //choose type

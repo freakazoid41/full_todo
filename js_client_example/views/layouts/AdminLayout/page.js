@@ -1,47 +1,32 @@
+import Layout from '../../../bin/parents/layout.js';
+import Theme from '../../../assets/theme/theme.js';
+
 
 import NavBar       from '../../components/NavBar/component.js'
 import BottomBar    from '../../components/BottomBar/component.js'
 
-export default class AdminLayout{
-
-    constructor(elm,page,renderCallback = null,redirectCallback = null){
-        this.renderCallback = renderCallback;
-        this.redirectCallback = redirectCallback;
-        this.page = page;
-        this.referance = elm;
-        
-    }
-
-    loadCss(){
-        const styles = [
-            'views/layouts/AdminLayout/page.css?v='+(new Date).getTime()
-        ];
-         
-        //render css elements to dom
-        styles.forEach(el=>{
-            const link = document.createElement('link');
-            link.href = el;
-            link.rel  = 'stylesheet';
-            link.dataset.type='layout';
-            document.querySelector('head').appendChild(link);
-        });
-    }
+export default class AdminLayout extends Layout{
 
     async render(){
-        this.loadCss();
-        this.referance.innerHTML =` <div id="header_container"></div>
+        const theme = new Theme();
+        
+
+        this.styles = [
+            'views/layouts/AdminLayout/page.css?v='+(new Date).getTime()
+        ];
+
+        //render layout
+        await this.view(` <div id="header_container"></div>
 
                                     <div data-layout="AdminLayout" id="page_container">
                                         <article> Loading....</article>
                                     </div>
 
-                                    <div id="footer_container"></div>`;
-        
-        await this.afterRender();
+                                    <div id="footer_container"></div>`);
     }
 
     async redirect(){
-        const page = new this.page(document.getElementById('page_container'));
+        const page = new this.page(document.getElementById('page_container'),null,this.beforeRenderPage);
         await page.render();
         if(this.redirectCallback !== null) this.redirectCallback(this.referance);
     }
@@ -54,7 +39,7 @@ export default class AdminLayout{
         await footer.render();
 
         //page referance
-        const page = new this.page(document.getElementById('page_container'));
+        const page = new this.page(document.getElementById('page_container'),null,this.beforeRenderPage);
         await page.render();
 
         if(this.renderCallback !== null) this.renderCallback(this.referance);

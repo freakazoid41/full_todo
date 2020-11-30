@@ -1,34 +1,20 @@
+import Component from '../../../../bin/parents/component.js';
+
 import Plib from '../../../../services/Plib.js';
 import PickleTree  from '../../../../assets/tree//pickletree.js';
 
-export default class Categories extends Plib{
+export default class Categories extends Component{
 
-    constructor(elm,renderCallback = null){
-        super();
-        this.renderCallback = renderCallback;
-        this.referance = elm;
+    async render(){
         
-    }
-
-    loadCss(){
-        const styles = [
+        this.styles = [
             'views/pages/Settings/Categories/component.css?v='+(new Date).getTime(),
             'assets/tree/pickletree.css?v='+(new Date).getTime()
         ];
-         
-        //render css elements to dom
-        styles.forEach(el=>{
-            const link = document.createElement('link');
-            link.href = el;
-            link.dataset.type='page';
-            link.rel  = 'stylesheet';
-            document.querySelector('head').appendChild(link);
-        });
-    }
 
-    async render(){
-        this.loadCss();
-        this.referance.innerHTML = `<div class="card fluid shadow">
+       
+        //render component
+        await this.view( `<div class="card fluid shadow">
                                         <div class="section head_section">
                                             <h4>Item Categories</h4>
                                             <button type="button" class="secondary ripple" id="btn_add_category">
@@ -38,9 +24,8 @@ export default class Categories extends Plib{
                                         <div class="section">
                                             <div class="tree" id="div_tree"></div>
                                         </div>
-                                    </div>`;
+                                    </div>`);
 
-        await this.afterRender();
     }
 
 
@@ -52,7 +37,7 @@ export default class Categories extends Plib{
 
     async build(){
         this.container = {};
-        
+        this.plib = new Plib();
         //get categories and build tree
         this.getCategories();
     }
@@ -80,14 +65,14 @@ export default class Categories extends Plib{
             title:'Edit',
             //context button click event
             onClick : (node) => {
-                this.getCForm('update',node.parent.id,node.value);
+                this.getCForm('update',node.parent.value,node.value);
             }
         },{
             icon:'fa fa-trash',
             title:'Delete',
             onClick : async (node) => {
-                this.setLoader('#div_tree');
-                await this.request({
+                this.plib.setLoader('#div_tree');
+                await this.plib.request({
                     method:'POST',
                     url: '/src/passage.php?job=event',
                     data:{
@@ -100,15 +85,15 @@ export default class Categories extends Plib{
                 }).then(rsp=>{
                     if(rsp.rsp){
                         this.tree.getNode(node.value).deleteNode();
-                        this.toast('error','Category Removed !!');
+                        this.plib.toast('error','Category Removed !!');
                     }else{
-                        this.toast('error','Error Happend !!');
+                        this.plib.toast('error','Error Happend !!');
                     }
                 });
-                this.setLoader('#div_tree',false);
+                this.plib.setLoader('#div_tree',false);
             }
         }];
-        await this.request({
+        await this.plib.request({
             method: 'POST',
             url: '/src/passage.php?job=data&event=get',
             data: {
@@ -135,7 +120,7 @@ export default class Categories extends Plib{
                     dropCallback: async (node) => {
                         //update node parent
                         this.container[node.value].parent_id = node.parent.id;
-                        await this.request({
+                        await this.plib.request({
                             method:'POST',
                             url: '/src/passage.php?job=event',
                             data:{
@@ -147,7 +132,7 @@ export default class Categories extends Plib{
                                 })
                             }
                         }).then(rsp=>{
-                            if(!rsp.rsp) this.toast('error','Error Happend !!');
+                            if(!rsp.rsp) this.plib.toast('error','Error Happend !!');
                         });
                     },
                     c_config: {
@@ -198,13 +183,13 @@ export default class Categories extends Plib{
                 }
             },
             preConfirm:async ()=>{
-                const model = this.checkForm('.elm_categories');
+                const model = this.plib.checkForm('.elm_categories');
                 if(model.valid){
                     //set parent id and main id
                     model.obj.parent_id = parent_id;
                     model.obj.id = id;
                     //send data to api
-                    await this.request({
+                    await this.plib.request({
                         method:'POST',
                         url: '/src/passage.php?job=event',
                         data:{
@@ -216,7 +201,7 @@ export default class Categories extends Plib{
                         if(rsp.rsp){
                             model.obj.id = rsp.data.id;
                             this.container[rsp.data.id] = model.obj;
-                            this.toast('success','Category '+id === 0 ? 'Added' : 'Updated'+' ..');
+                            this.plib.toast('success','Category '+id === 0 ? 'Added' : 'Updated'+' ..');
                             //manage tree 
                             if(id === 0){
                                 //add new tree element
@@ -235,7 +220,7 @@ export default class Categories extends Plib{
                                 our_node.updateNode();
                             }
                         }else{
-                            this.toast('error','Error Happend !!');
+                            this.plib.toast('error','Error Happend !!');
                         }
                     });
                 }else{

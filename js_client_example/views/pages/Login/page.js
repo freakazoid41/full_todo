@@ -3,8 +3,9 @@ import Plib from '../../../services/Plib.js';
 
 export default class Login extends Plib{
 
-    constructor(elm,renderCallback = null){
+    constructor(elm,renderCallback = null,beforeRender = null){
         super();
+        this.beforeRender = beforeRender
         this.renderCallback = renderCallback;
         this.referance = elm;
     }
@@ -25,7 +26,11 @@ export default class Login extends Plib{
     }
 
     async render(){
+        this.referance.innerHTML = '';
+        //trigger before render if is exist 
+        if(this.beforeRender !== null) await this.beforeRender();
         this.loadCss();
+        //render page
         this.referance.innerHTML = `<section class="container">
                                         <div class="row login_row">
                                             <div class="col-sm-4">
@@ -75,7 +80,7 @@ export default class Login extends Plib{
             //check valid
             const obj = this.checkForm('.elm_login');
             if(obj.valid){
-                this.setLoader('.login_row');
+                this.setLoader('body');
                 //send form
                 await this.request({
                     method:'POST',
@@ -89,7 +94,7 @@ export default class Login extends Plib{
                         this.toast('error','Error Happend !!')
                     }
                 });
-                this.setLoader('.login_row',false);
+                this.setLoader('body',false);
             }else{
                 this.toast('error','User Not Exist !!')
             }

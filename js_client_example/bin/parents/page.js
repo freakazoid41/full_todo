@@ -1,18 +1,16 @@
-export default class Home{
-
+export default class Page{
     constructor(elm,renderCallback = null,beforeRender = null){
         this.beforeRender = beforeRender
         this.renderCallback = renderCallback;
         this.referance = elm;
     }
 
-    loadCss(){
-        const styles = [
-            'views/pages/Home/page.css?v='+(new Date).getTime()
-        ];
-         
+    /**
+     * this method will load css files for page from local css container
+     */
+    async loadCss(){
         //render css elements to dom
-        styles.forEach(el=>{
+        this.styles.forEach(el=>{
             const link = document.createElement('link');
             link.href = el;
             link.dataset.type='page';
@@ -21,25 +19,23 @@ export default class Home{
         });
     }
 
-    async render(){
+    /**
+     * this method will be return view to html target
+     */
+    async view(view){
+        //remove inside of referance 
         this.referance.innerHTML = '';
+
         //trigger before render if is exist 
         if(this.beforeRender !== null) await this.beforeRender();
-        this.loadCss();
-        //render page
-        this.referance.innerHTML = `<section class="main_section fade-in">
-                                        I m home
-                                    </section>`;
+        
+        //render css files
+        await this.loadCss();
 
+        //render page
+        this.referance.innerHTML = view;
+
+        //trigger after page render event
         await this.afterRender();
     }
-
-
-    async afterRender(){
-       
-        if(this.renderCallback !== null) this.renderCallback(this.referance);
-    }
-
-
 }
-

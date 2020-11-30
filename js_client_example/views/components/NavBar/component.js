@@ -28,6 +28,11 @@ export default class NavBar{
                                         <button data-url="/#/persons" class="header_btn">Persons</button>
                                         <button data-url="/#/items" class="header_btn">Items</button>
                                         <button data-url="/#/transactions" class="header_btn">Transactions</button>
+                                        <div class="div_logout">
+                                            <i class="fas fa-sign-out-alt selectable-icon" id="i_logout"></i>
+                                        </div>
+                                        
+                                        
                                     </header>`;
         await this.afterRender();
     }
@@ -53,6 +58,12 @@ export default class NavBar{
                     }
                 }
             }
+        });
+
+        //logout
+        document.getElementById('i_logout').addEventListener('click',()=>{
+            sessionStorage.setItem('sinfo','-1');
+            window.location.href = '/src/passage.php?job=logout';
         });
     }
 
