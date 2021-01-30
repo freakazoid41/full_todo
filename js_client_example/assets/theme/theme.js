@@ -5,18 +5,18 @@ export default class Theme {
 
     setEvents(){
         document.body.addEventListener('click',e=>{
-            if(e.target.classList.contains('nav-tab')){
+            if(e.target.classList.contains('nav-link')){
                 const tab = e.target.closest('.tab-content');
                 //reset all tabs
-                const tabs = tab.querySelectorAll('.nav-tab');
+                const tabs = tab.querySelectorAll('.nav-link');
                 for(let i = 0;i<tabs.length;i++){
                     const target = document.getElementById(tabs[i].dataset.target);
                     if(tabs[i] !== e.target){
                         tabs[i].classList.remove('active');
-                        target.classList.remove('active');
+                        target.classList.remove('active','show');
                     }else{
                         tabs[i].classList.add('active');
-                        target.classList.add('active');
+                        target.classList.add('active','show');
                     }
                 }
             }

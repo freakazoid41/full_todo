@@ -8,22 +8,36 @@ export default class Plib{
      * system request method
      * @param {json object} rqs 
      */
-    async request(rqs, file = null) {
-        let fD = new FormData();
-        for (let key in rqs['data']) {
-            fD.append(key, rqs['data'][key]);
-        }
-
-        if (file !== null) {
-            fD.append('file', file, file.name);
-        }
+    async request(rqs, file = null,isApi = true) {
+        
+        //set fetch options
         let op = {
             method: rqs['method'],
         };
-        if (rqs['method'] !== 'GET') {
-            op.body = fD;
+
+        if(op.method === 'PATCH' || op.method === 'delete'){
+            //because patch and delete methods will send url encoded data !!
+            op.headers = { 'Content-Type':'application/x-www-form-urlencoded' };
+            op.body = new URLSearchParams(rqs.data);
+        }else{
+            //post will send form data
+            if(rqs['method'] !== 'GET') {
+                //create form data
+                const fD = new FormData();
+                for (let key in rqs['data']) {
+                    fD.append(key, rqs['data'][key]);
+                }
+
+                if (file !== null) {
+                    fD.append('file', file, file.name);
+                }
+                op.body = fD;
+            }
         }
-        const rsp = await fetch(rqs['url'], op).then((response) => {
+
+        
+        //send fetch
+        const rsp = await fetch(isApi ? '/src/passage.php?url='+rqs['url'] : rqs['url'], op).then((response) => {
             //convert to json
             return response.json();
         });
@@ -65,7 +79,7 @@ export default class Plib{
     async checkSession(){
         if(sessionStorage.getItem('sinfo') === null || sessionStorage.getItem('sinfo') === '-1'){
             //ask session  info to client
-            return await this.request({
+            /*return await this.request({
                 method: 'POST',
                 url: '/src/passage.php?job=data&event=checkSession',
             }).then(rsp => {
@@ -73,11 +87,11 @@ export default class Plib{
                     sessionStorage.setItem('sinfo',JSON.stringify(rsp.data));
                 }
                 return rsp.rsp;
-            });
+            });*/
+            return false;
         }else{
             return true;
         }
-        return true;
     }
 
     /**
@@ -158,4 +172,28 @@ export default class Plib{
         }
         return rsp;
     }
+
+
+    /**
+     * this method will format money decimal
+     * @param {float} amount 
+     * @param {int} decimalCount 
+     * @param {string} decimal 
+     * @param {string} thousands 
+     */
+    formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
+        try {
+            decimalCount = Math.abs(decimalCount);
+            decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+      
+            const negativeSign = amount < 0 ? "-" : "";
+        
+            const i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+            const j = (i.length > 3) ? i.length % 3 : 0;
+      
+            return negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+        } catch (e) {
+          console.log(e)
+        }
+    };
 }

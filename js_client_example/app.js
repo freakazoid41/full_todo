@@ -34,43 +34,6 @@ const routes = {
     }
 };
 
-//this method will clear main debris of page
-/*const clearDebris = async ()=>{
-    
-    const clearCss = async () =>{
-        //clean old css files if exist
-        document.querySelectorAll('link[data-type="page"]').forEach(el=>{
-            el.outerHTML = '';
-        });
-    }
-    const clearJs = async () =>{
-        //clean old layout js files if exist
-        document.querySelectorAll('script[data-type="page"]').forEach(el=>{
-            el.outerHTML = '';
-        });
-    }
-
-    await Promise.all([clearJs(), clearCss()]);
-}*/
-
-//this method will clear layout debris of page
-/*const clearLayoutDebris= async ()=>{
-    const clearCss = async () =>{
-        //clean old css files if exist
-        document.querySelectorAll('link[data-type="layout_component"]').forEach(el=>{
-            el.outerHTML = '';
-        });
-    }
-    const clearJs = async () =>{
-        //clean old layout js files if exist
-        document.querySelectorAll('link[data-type="layout"]').forEach(el=>{
-            el.outerHTML = '';
-        });
-    }
-
-    await Promise.all([clearJs(), clearCss()]);
-}*/
-
 // The router code. Takes a URL, checks against the list of supported routes and then renders the corresponding content page.
 const router = async () => {
     const container = null || document.getElementById('div_container');

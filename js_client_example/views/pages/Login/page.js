@@ -31,34 +31,40 @@ export default class Login extends Plib{
         if(this.beforeRender !== null) await this.beforeRender();
         this.loadCss();
         //render page
-        this.referance.innerHTML = `<section class="container">
-                                        <div class="row login_row">
-                                            <div class="col-sm-4">
-                                                <div class="card fluid shadow">
-                                                    <div class="section">
-                                                        <fieldset>
-                                                            <legend>System Login</legend>
-                                                            <div class="row">
-                                                                <div class="col-md-12 input-group vertical text-center">
-                                                                    <label for="username">Username</label>
-                                                                    <input required class="elm_login" type="text" name="username" placeholder="Username"/>
-                                                                </div>
-                                                                <div class="col-md-12 input-group vertical text-center">
-                                                                    <label for="username">Password</label>
-                                                                    <input required class="elm_login" type="text" name="password" placeholder="Password"/>
-                                                                </div>
-                                                                <div class="col-md-12 input-group vertical">
-                                                                    <button type="button" class="secondary ripple" id="btn_login">Login</button>
-                                                                </div>
+        
+        this.referance.innerHTML = `<div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-12">
+                                                <div class="card p-4">
+                                                    <div class="card-body">
+                                                        <h1>Login</h1>
+                                                        <p class="text-muted">Sign In to your account</p>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend"><span class="input-group-text">
+                                                                <svg class="c-icon">
+                                                                <use xlink:href="/assets/theme/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+                                                                </svg></span></div>
+                                                            <input required class="form-control elm_login" name="username" type="text" placeholder="Username">
+                                                        </div>
+                                                        <div class="input-group mb-4">
+                                                            <div class="input-group-prepend"><span class="input-group-text">
+                                                                <svg class="c-icon">
+                                                                <use xlink:href="/assets/theme/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                                                                </svg></span></div>
+                                                            <input required class="form-control elm_login" name="password" type="password" placeholder="Password">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <button class="btn btn-primary px-4" id="btn_login" type="button">Login</button>
                                                             </div>
-                                                        </fieldset>
+                                                            <div class="col-6 text-right">
+                                                                <button class="btn btn-link px-0" type="button">Forgot password?</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-                                        </div>
-                                    </section>`;
-
+                                        </div>`;
         await this.afterRender();
     }
 
@@ -84,11 +90,13 @@ export default class Login extends Plib{
                 //send form
                 await this.request({
                     method:'POST',
-                    url: '/src/passage.php?job=login',
+                    url: '/admin_login',
                     data:obj.obj
                 }).then(rsp=>{
                     if(rsp.rsp){
-                        this.toast('success','Loggined ..')
+                        this.toast('success','Loggined ..');
+                        //set informations to session
+                        sessionStorage.setItem('sinfo',JSON.stringify(rsp.data));
                         window.location.href = '/#/home';
                     }else{
                         this.toast('error','Error Happend !!')

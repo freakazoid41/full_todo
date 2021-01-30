@@ -1,4 +1,2 @@
-.login_row{ height: 100vh;justify-content: center;align-items: center;}
-.login_row button{margin-top: 15px;padding: 10px;}
-
-  
+body {display: flex; align-items: center;justify-content: center;}
+#div_container {width: 60vh;}

@@ -3,7 +3,7 @@ import Theme from '../../../assets/theme/theme.js';
 
 
 import NavBar       from '../../components/NavBar/component.js'
-import BottomBar    from '../../components/BottomBar/component.js'
+import SideBar    from '../../components/SideBar/component.js'
 
 export default class AdminLayout extends Layout{
 
@@ -16,13 +16,14 @@ export default class AdminLayout extends Layout{
         ];
 
         //render layout
-        await this.view(` <div id="header_container"></div>
-
-                                    <div data-layout="AdminLayout" id="page_container">
-                                        <article> Loading....</article>
-                                    </div>
-
-                                    <div id="footer_container"></div>`);
+        await this.view(` <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+                          </div>
+                          <div class="c-wrapper c-fixed-components">
+                            <header class="c-header c-header-light c-header-fixed c-header-with-subheader" id="headerbar">
+                            </header>
+                            <div class="c-body" data-layout="AdminLayout" id="page_container">
+                            </div>
+                          </div>`);
     }
 
     async redirect(){
@@ -32,11 +33,11 @@ export default class AdminLayout extends Layout{
     }
 
     async afterRender(){
-        const header = new NavBar(document.getElementById('header_container'));
+        const header = new NavBar(document.getElementById('headerbar'));
         await header.render();
 
-        const footer = new BottomBar(document.getElementById('footer_container'));
-        await footer.render();
+        const sidebar = new SideBar(document.getElementById('sidebar'));
+        await sidebar.render();
 
         //page referance
         const page = new this.page(document.getElementById('page_container'),null,this.beforeRenderPage);

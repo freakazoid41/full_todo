@@ -1,3 +1,7 @@
+.pickletable .divPagination button.current {
+    background-color: darkgrey;
+    color: white;
+}
 .pickletable .divPagination button {
     background-color: white;
     color: black;

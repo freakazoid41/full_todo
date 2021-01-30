@@ -11,7 +11,7 @@ class Database {
 
     protected function __construct(){
         //set database parameters
-        $this->params = array(
+        /*$this->params = array(
             //host name  parameter
             'host' => '213.238.181.33',
             //post parameter
@@ -22,7 +22,7 @@ class Database {
             'password' => 'Kadir412.',
             //db name parameter
             'database' => 'rentdb',
-        );
+        );*/
     }
 
 
@@ -32,14 +32,7 @@ class Database {
      * @throws \Exception
      */
     function connect(){
-        $conStr = sprintf("pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s", 
-            $this->params['host'], 
-            $this->params['port'], 
-            $this->params['database'], 
-            $this->params['user'], 
-            $this->params['password']);
-
-        $pdo = new \PDO($conStr);
+        $pdo = new \PDO("sqlite:".__DIR__."/transport.sqlite");
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         return $pdo;

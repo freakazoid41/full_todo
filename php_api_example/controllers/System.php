@@ -4,8 +4,25 @@ namespace app\controllers;
 require_once "autoloader.php";
 
 class System{
-    protected function __contruct(){
-
+    function __construct($headers){
+		$parts = explode('/',$_SERVER['REQUEST_URI']);
+		if($parts[1]!='admin_login'){
+			$rsp = \app\helpers\System::checkToken($headers);
+			//token failed
+			if(!$rsp['success']){
+				header('Content-Type: application/json');
+				//Status Code 401 = Unauthorized
+				header("HTTP/1.1 401 Unauthorized");
+				//Writes the JSON message for the user
+				$return = array(
+					'rsp'		=>	$rsp['success'],
+					'message' 	=> 	$rsp['msg'],
+					'command'	=> 	0,
+				);
+				echo json_encode($return);
+				die; //Stops executing the PHP 
+			}
+		}
     }
 
 
@@ -52,6 +69,29 @@ class System{
         }
         return array('msg' => 'Maybe something is missing ? (you did not send "id" idiot..)');
     }
+
+	public function handleTableRequest($parts,$request){
+        //1.part is model name
+        //get model
+        require_once "models/".ucfirst($parts[1]).".php";
+        //create new instence
+        $model = 'app\\models\\'.ucfirst($parts[1]);
+        $model = new $model();
+        
+        return $model->getTable(json_decode($_POST['tableReq'],true));
+	}
+	
+	public function handleQueryRequest($parts,$request){
+        //1.part is model name
+        //get model
+        require_once "models/".ucfirst($parts[1]).".php";
+        //create new instence
+        $model = 'app\\models\\'.ucfirst($parts[1]);
+        $model = new $model();
+        
+        return $model->get($_POST,true);
+    }
+
 
     public function login($data,$headers){
 		
@@ -101,71 +141,4 @@ class System{
 		}
     }
 
-    /*
-    //take data
-		$data = $this->input->post();
-		//load user model
-		$this->load->model('sys_users');
-		$this->load->model('sys_utokens');
-		$rsp = $this->sys_users->_get(null,array(
-			'username'=>$data['username'],
-			'password'=>$data['password']
-		));
-		if($rsp['rsp']===true){
-			//get token and person info
-			$token = _get_token();
-			$label = $this->input->request_headers()['User-Agent'];
-			//clean all old dated tokens
-			$this->sys_utokens->_delete(array(
-				'user_id'=>$rsp['data'][0]->id,
-				'user_sign'=>$label
-			));
-			//add new token to database
-			$this->sys_utokens->_add(array(
-				'user_sign'=>$label,
-				'user_id'=>$rsp['data'][0]->id,
-				'user_token' => $token['token'],
-				'end_at'=>$token['end']
-			));
-
-			$this->load->model('per_con_modules');
-			$mlist = array();
-			$modules = $this->per_con_modules->_get(null,array(
-				'person_id'=>$rsp['data'][0]->person_id,
-			));
-			//set modules by their ids
-			foreach($modules['data'] as $m){
-				$mlist[$m->module_id] = $m;
-			}
-			
-			//set person info
-			$this->load->model('persons');
-			$person = $this->persons->_get(null,array(
-				'id'=>$rsp['data'][0]->person_id,
-			));
-
-
-
-			
-			//send new created token to client
-			$rsp = array(
-				'rsp'=>true,
-				'msg' => 'Logged in !!',
-				'data' => array(
-					'id' =>$rsp['data'][0]->id,
-					'person_id'=>$person['data'][0]->id,
-					'type'=>$rsp['data'][0]->utype,
-					'token' => $token['token'],
-					'person' => $person['data'][0]->name,
-					'modules' =>$mlist
-				)
-			);
-		}else{
-			$rsp = array('rsp'=>false,'msg'=>'Bilgiler Yanlış !!');
-		}
-        return $this->output
-		->set_content_type('application/json')
-		->set_status_header(200)
-		->set_output(json_encode($rsp));
-    */
 }

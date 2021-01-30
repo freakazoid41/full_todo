@@ -66,13 +66,13 @@ class Main extends db{
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         //return result
         if(count($result)==0){
-            return array('data' =>array(),'rsp'=>false);
+            return array('data' =>array(),'success' => false);
         }
-        return array('data' =>$result,'rsp'=>true);
+        return array('data' =>$result,'success' => true);
     }
 
     public function add($data=null){
-        $rsp = array('data' =>array(),'rsp'=>false,'msg'=>'Empty form..');
+        $rsp = array('data' =>array(),'success' => false,'msg'=>'Empty form..');
         if($data != null){
             $values = array();
             $keys = array();
@@ -91,22 +91,23 @@ class Main extends db{
             }
             
             //build sql
-            $sql = 'insert into '.$this->table.' ('.implode(',',$keys).") values (".implode(',',$values).") returning id" ;
+            $sql = 'insert into '.$this->table.' ('.implode(',',$keys).") values (".implode(',',$values).")" ;
+            
             $query = $this->conn->query($sql); 
             //get effected row count
             $result = $this->conn->lastInsertId();
             //return result
             if($result==0){
-                $rsp = array('data' =>array(),'rsp'=>false);
+                $rsp = array('data' =>array(),'success' => false);
             }else{
-                $rsp = array('data' =>array('id'=>$result),'rsp'=>true,'msg'=>'Success...');
+                $rsp = array('data' =>array('id'=>$result),'success' => true,'msg'=>'Success...');
             }
         }
         return $rsp;
     }
 
     public function update($data){
-        $rsp = array('data' =>array(),'rsp'=>false,'msg'=>'Empty form..');
+        $rsp = array('data' =>array(),'success' => false,'msg'=>'Empty form..');
         if($data != null){
             //if id sended
             if(isset($data['id'])){
@@ -122,12 +123,12 @@ class Main extends db{
                 $result = $query->rowCount();
                 //return result
                 if($result!=1){
-                    $rsp = array('data' =>array(),'rsp'=>false);
+                    $rsp = array('data' =>array(),'success' => false);
                 }else{
-                    $rsp = array('data' =>array(),'rsp'=>true,'msg'=>'Success...');
+                    $rsp = array('data' =>array(),'success' => true,'msg'=>'Success...');
                 }
             }else{
-                $rsp = array('data' =>array(),'rsp'=>false,'msg'=>'No id..');
+                $rsp = array('data' =>array(),'success' => false,'msg'=>'No id..');
             }
             
         }
@@ -135,7 +136,7 @@ class Main extends db{
     }
 
     public function delete($data){
-        $rsp = array('data' =>array(),'rsp'=>false);
+        $rsp = array('data' =>array(),'success' => false);
         if($data != null){
             
             $values = array();
@@ -150,9 +151,9 @@ class Main extends db{
             $result = $query->rowCount();
             //return result
             if($result!=1){
-                $rsp = array('data' =>array(),'rsp'=>false);
+                $rsp = array('data' =>array(),'success' => false);
             }else{
-                $rsp = array('data' =>array(),'rsp'=>true,'msg'=>'Success...');
+                $rsp = array('data' =>array(),'success' => true,'msg'=>'Success...');
             }
             
         }

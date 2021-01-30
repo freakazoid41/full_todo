@@ -327,15 +327,19 @@ export default class PickleTable {
     async request(rqs) {
         let fD = new FormData();
 
-        for (let key in rqs['data']) {
-            fD.append(key, rqs['data'][key]);
+        for (let key in rqs.data) {
+            fD.append(key, rqs.data[key]);
         }
 
         const op = {
-            method: rqs['method'],
+            method: rqs.method,
+            mode  : 'cors',
+            credentials: 'include' 
         };
 
-        if (rqs['method'] !== 'GET') {
+        if(this.config.ajax !== undefined && this.config.ajax.headers !== undefined) op.headers = this.config.ajax.headers
+
+        if (rqs.method !== 'GET') {
             op.body = fD;
         }
         return await fetch(rqs['url'], op).then((response) => {
